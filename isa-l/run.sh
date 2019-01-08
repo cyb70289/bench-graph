@@ -18,6 +18,8 @@ testfile=$1
 [ -f "${testfile}" ] || { echo "test file not found: $1"; exit 1; }
 
 while read host; do
+    # skip commented hosts
+    grep "^[ \t]*#" <<< ${host} > /dev/null && continue
     tryrun ssh -n ${host} "mkdir -p /tmp/isa-l-test/"
     tryrun scp -r ${testfile} ${host}:/tmp/isa-l-test/
 done < test-hosts
@@ -30,8 +32,12 @@ testcmd=$@
 [ -z "${testcmd}" ] && testcmd="./$(basename ${testfile})"
 
 while read host; do
+    # skip commented hosts
+    grep "^[ \t]*#" <<< ${host} > /dev/null && continue
+    # strip username: ubuntu@wls-arm-qc01 ==> wlls-arm-qc01
+    HOST=$(sed 's/^.*@//' <<< "${host}")
     echo ---------------------------------------------------------------------
-    echo "Test on ${bold}${host}${normal}: cd /tmp/isa-l-test && ${testcmd}"
+    echo "Test on ${bold}${HOST}${normal}: cd /tmp/isa-l-test && ${testcmd}"
     ssh -n ${host} "echo -n 'page size: '; getconf PAGESIZE;                \
                     echo -n 'load average: '; cut /proc/loadavg -f1 -d' ';  \
                     cd /tmp/isa-l-test && ${testcmd}"
