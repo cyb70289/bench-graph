@@ -1,0 +1,7 @@
+wls-arm-softiron0[1-6]  Overdrive3000
+wls-arm-qc0[12]         Centriq2400
+wls-arm-huawei0[12]     D03
+wls-arm-huawei0[34]     D05
+huawei-amd              D05
+wls-arm-cavium0[12]     ThunderX1
+wls-arm-cavium0[4-6]    ThunderX2

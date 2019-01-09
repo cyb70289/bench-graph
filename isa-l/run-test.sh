@@ -19,7 +19,7 @@ testfile=$1
 
 while read host; do
     # skip commented hosts
-    grep "^[ \t]*#" <<< ${host} > /dev/null && continue
+    [[ ${host} =~ ^[\ \t]*# ]] && continue
     tryrun ssh -n ${host} "mkdir -p /tmp/isa-l-test/"
     tryrun scp -r ${testfile} ${host}:/tmp/isa-l-test/
 done < test-hosts
@@ -31,14 +31,12 @@ shift 1
 testcmd=$@
 testfile="$(basename ${testfile})"
 (echo ======================================================================;
- echo $(date);
- echo ======================================================================;
-) >> _${testfile}_.log
+ echo $(date +"%Y-%m-%d %T");) >> _${testfile}_.log
 [ -z "${testcmd}" ] && testcmd=./${testfile}
 
 while read host; do
     # skip commented hosts
-    grep "^[ \t]*#" <<< ${host} > /dev/null && continue
+    [[ ${host} =~ ^[\ \t]*# ]] && continue
     # strip username: ubuntu@wls-arm-qc01 ==> wlls-arm-qc01
     HOST=$(sed 's/^.*@//' <<< "${host}")
     echo ---------------------------------------------------------------------
