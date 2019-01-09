@@ -29,7 +29,12 @@ echo Run test on test nodes
 echo ======================================================================
 shift 1
 testcmd=$@
-[ -z "${testcmd}" ] && testcmd="./$(basename ${testfile})"
+testfile="$(basename ${testfile})"
+(echo ======================================================================;
+ echo $(date);
+ echo ======================================================================;
+) >> _${testfile}_.log
+[ -z "${testcmd}" ] && testcmd=./${testfile}
 
 while read host; do
     # skip commented hosts
@@ -42,4 +47,7 @@ while read host; do
                     echo -n 'load average: '; cut /proc/loadavg -f1 -d' ';  \
                     cd /tmp/isa-l-test && ${testcmd}"
     [ $? = 0 ] || { echo ERR; exit 1; }
-done < test-hosts
+done < test-hosts | tee -a _${testfile}_.log
+
+# drop color code
+sed -i _${testfile}_.log -e 's/\x1b\[[0-9]*m//g' -e 's/\x0f//g'
