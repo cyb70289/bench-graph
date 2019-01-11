@@ -7,9 +7,6 @@ tryrun() {
     [ "${err}" -ne "0" ] && { echo ERR; exit ${err}; }
 }
 
-bold=$(tput bold)
-normal=$(tput sgr0)
-
 echo ======================================================================
 echo Copy test file to test nodes
 echo ======================================================================
@@ -40,12 +37,9 @@ while read host; do
     # strip username: ubuntu@wls-arm-qc01 ==> wlls-arm-qc01
     HOST=$(sed 's/^.*@//' <<< "${host}")
     echo ---------------------------------------------------------------------
-    echo "Test on ${bold}${HOST}${normal}: cd /tmp/isa-l-test && ${testcmd}"
+    echo "Test on ${HOST}: cd /tmp/isa-l-test && ${testcmd}"
     ssh -n ${host} "echo -n 'page size: '; getconf PAGESIZE;                \
                     echo -n 'load average: '; cut /proc/loadavg -f1 -d' ';  \
                     cd /tmp/isa-l-test && ${testcmd}"
     [ $? = 0 ] || { echo ERR; exit 1; }
 done < test-hosts | tee -a _${testfile}_.log
-
-# drop color code
-sed -i _${testfile}_.log -e 's/\x1b\[[0-9]*m//g' -e 's/\x0f//g'
