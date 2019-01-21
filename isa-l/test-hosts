@@ -1,5 +1,5 @@
 ubuntu@wls-arm-qc01
-wls-arm-qc02
-wls-arm-huawei04
-wls-arm-cavium04
-#wls-arm-softiron06
+linux@wls-arm-qc02
+linux@wls-arm-huawei04
+linux@wls-arm-cavium04
+#linux@wls-arm-softiron06

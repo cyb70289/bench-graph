@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# XXX: only supports raid parsing
+
+# Parse log and append to csv file
+# - Generate log file by run-tests.sh
+# - Parse log file, extract information and append to csv file for analysis
+#
+# Example
+# $ ./parse-log.sh _test-file-name_.log
+
 [ $1 = "" ] && { echo log file needed; exit 1; }
 [ -r $1 ] || { echo cannot read $1; exit 1; }
 
