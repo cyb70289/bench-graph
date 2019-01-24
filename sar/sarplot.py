@@ -89,8 +89,8 @@ class BenchCPU(Bench):
             ax[0][1].set_title('IOWait per CPU')
             ax[0][0].legend()
             ax[0][1].legend()
-        ax[0][0].set_ylabel('Load')
-        ax[0][1].set_ylabel('IOWait')
+        ax[0][0].set_ylabel('Load', fontsize=14)
+        ax[0][1].set_ylabel('IOWait', fontsize=14)
 
         fig.savefig('cpu.png', bbox_inches='tight')
         plt.show()
@@ -127,24 +127,24 @@ class BenchBLK(Bench):
             # tps
             ax[i][0].plot(df['logtime'], df['tps'])
             ax[i][0].set_title(dev+' - IOPS')
-            ax[i][0].set_ylabel('Transfers per second')
-            # await, svctm
-            ax[i][1].plot(df['logtime'], df['await'], label='await')
-            ax[i][1].plot(df['logtime'], df['svctm'], label='svctm')
-            ax[i][1].set_title(dev+' - IOWAIT')
-            ax[i][1].set_ylabel('Milliseconds')
+            ax[i][0].set_ylabel('Transfers per second', fontsize=14)
+            # rkB/s, wkB/s
+            ax[i][1].plot(df['logtime'], df['rkB/s'], label='read')
+            ax[i][1].plot(df['logtime'], df['wkB/s'], label='write')
+            ax[i][1].set_title(dev+' - Read,Write')
+            ax[i][1].set_ylabel('KB per second', fontsize=14)
             ax[i][1].legend()
             # %util
             ax[i][2].plot(df['logtime'], df['%util'])
             ax[i][2].set_title(dev+' - Utilization')
-            ax[i][2].set_ylabel('Device utilization')
+            ax[i][2].set_ylabel('Device utilization', fontsize=14)
             l = ['{:.0f}%'.format(y) for y in ax[i][2].get_yticks().tolist()]
             ax[i][2].set_yticklabels(l)
-            # rd_sec/s, wr_sec/s
-            ax[i][3].plot(df['logtime'], df['rd_sec/s'], label='read')
-            ax[i][3].plot(df['logtime'], df['wr_sec/s'], label='write')
-            ax[i][3].set_title(dev+' - Read,Write')
-            ax[i][3].set_ylabel('Sectors per second')
+            # await, svctm
+            ax[i][3].plot(df['logtime'], df['await'], label='await')
+            ax[i][3].plot(df['logtime'], df['svctm'], label='svctm')
+            ax[i][3].set_title(dev+' - IOWAIT')
+            ax[i][3].set_ylabel('Milliseconds', fontsize=14)
             ax[i][3].legend()
 
         fig.savefig('blk.png', bbox_inches='tight')
@@ -182,7 +182,7 @@ class BenchNET(Bench):
             ax[i].plot(df['logtime'], df['rxkB/s']//1000, label='RX')
             ax[i].plot(df['logtime'], df['txkB/s']//1000, label='TX')
             ax[i].set_title(dev)
-            ax[i].set_ylabel('MB/s')
+            ax[i].set_ylabel('MB/s', fontsize=14)
             ax[i].legend()
 
         fig.savefig('net.png', bbox_inches='tight')
@@ -200,7 +200,7 @@ class BenchMEM(Bench):
         fig, ax = self.prepare_plot(1)
         ax[0][0].plot(self.df['logtime'], self.df['%memused'])
         ax[0][0].set_title('Memory usage')
-        ax[0][0].set_ylabel('Memory used')
+        ax[0][0].set_ylabel('Memory used', fontsize=14)
         # append % to y labels
         ylabels = ['{:.0f}%'.format(y) for y in ax[0][0].get_yticks().tolist()]
         ax[0][0].set_yticklabels(ylabels)
