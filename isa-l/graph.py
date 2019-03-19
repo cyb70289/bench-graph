@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--title', help='image title')
+    parser.add_argument('--alpha', type=float, help='transparency(0~1)')
     parser.add_argument('-n', '--nograph', action='store_true')
     parser.add_argument('csvfiles', nargs='+')
     return parser.parse_args()
@@ -42,7 +43,7 @@ def plot_hist(args, df_legend_lst):
     bins = np.arange(minv-delta*0.05, maxv+delta*0.05, 64)
 
     for i, (df, legend) in enumerate(df_legend_lst):
-        ax.hist(df['bandwidth'], bins=bins, label=legend)
+        ax.hist(df['bandwidth'], bins=bins, label=legend, alpha=args.alpha)
 
     ax.set_xlim([minv/2, maxv*1.05])
     ax.set_title(args.title)
